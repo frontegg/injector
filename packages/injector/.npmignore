@@ -1,0 +1,5 @@
+coverage
+.gitignore
+tsconfig.json
+.npmrc
+.npmignore

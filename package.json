@@ -1,0 +1,14 @@
+{
+  "name": "injector-monorepo",
+  "private": true,
+  "author": "Frontegg LTD",
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "lerna": "^3.22.1",
+    "rollup": "^2.38.1",
+    "typescript": "^4.1.3",
+    "uglify-js": "^3.12.5"
+  }
+}

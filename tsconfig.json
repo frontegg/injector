@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "declaration": false,
+    "noEmit": true,
+    "lib": [
+      "es2015",
+      "es2016",
+      "es2017",
+      "es2018",
+      "es2019",
+      "es2020",
+      "esnext",
+      "dom"
+    ],
+    "target": "es5",
+    "module": "esnext",
+    "jsx": "react-jsx",
+    "noEmitHelpers": true,
+    "importHelpers": true,
+    "allowJs": true,
+    "isolatedModules": false,
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "noUnusedLocals": true,
+    "moduleResolution": "node",
+    "strictPropertyInitialization": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "exclude": [
+    "node_modules",
+    "packages/injector",
+    "packages/ui"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "@frontegg/injector",
+  "version": "0.0.1",
+  "main": "dist/cjs/index.js",
+  "types": "dist/esm/index.d.ts",
+  "module": "dist/es2015/index.js",
+  "browser": "dist/umd/index.js",
+  "author": "Frontegg LTD",
+  "license": "MIT",
+  "scripts": {
+    "build": "yarn build:es2015 && yarn build:esm && yarn build:cjs && yarn build:umd && yarn build:umd:min",
+    "build:watch": "tsc -w",
+    "build:es2015": "tsc --module es2015 --target es2015 --outDir dist/es2015",
+    "build:esm": "tsc --module es2015 --target es5 --outDir dist/esm",
+    "build:cjs": "tsc --module commonjs --target es5 --outDir dist/cjs",
+    "build:umd": "rollup dist/esm/index.js --format umd --context window --sourcemap --name AdminBoxInjector -o dist/umd/admin-box-injector.js",
+    "build:umd:min": "cd dist/umd && uglifyjs --compress --mangle --source-map --comments -o admin-box-injector.min.js -- admin-box-injector.js && gzip admin-box-injector.min.js -c > admin-box-injector.min.js.gz",
+    "publish": "npm publish"
+  }
+}
