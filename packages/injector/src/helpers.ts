@@ -17,6 +17,6 @@ export async function getVersionMetadata(logger: Logger, cdn: string, _version: 
   if (version !== 'latest' && version !== 'stable') {
     version = `${_version}/config`;
   }
-  const res = await fetch(`${cdn}/${version}.json`, { cache: 'no-cache' });
+  const res = await fetch(`${cdn}/${version}.json`, { cache: 'no-cache', mode: 'no-cors' });
   return res.json();
 }
