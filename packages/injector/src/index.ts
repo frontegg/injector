@@ -88,35 +88,43 @@ class Injector {
 
   protected async loadEntrypoints() {
     return Promise.all([
-      ...this.js.map((file: string) => this.injectJavascript(`${this.cdn}/${this.version}/js/${file}`, true)),
+      ...this.js.map((file: string) => this.injectJavascript(`${this.cdn}/${this.version}/js/${file}`)),
       ...this.css.map((file: string) => this.injectCss(`${this.cdn}/${this.version}/css/${file}`)),
     ]);
   }
 
-  injectJavascript(url: string | HTMLScriptElement, entrypoint: boolean = false): Promise<void> {
+  injectJavascript(url: string | HTMLScriptElement): Promise<void> {
     return new Promise(async (resolve) => {
       const logger = this.logger;
       if (typeof url === 'string') {
         logger.info('Loading JS file from ', url);
-
-        const res = await fetch(url, { method: 'GET', cache: 'default' });
-        let contentScript = await res.text();
-
         const bundleScript = document.createElement('script');
         bundleScript.setAttribute('charset', 'utf-8');
-        bundleScript.setAttribute('type', 'text/javascript');
-
-        if (contentScript.indexOf('FRONTEGG_INJECTOR_CDN_HOST')) {
-          contentScript = contentScript.replace('/FRONTEGG_INJECTOR_CDN_HOST', this.cdn);
-
-          contentScript = `(()=> { const fronteggInjector = FronteggInjector.getInstance('${this.name}');
-          ${contentScript}
-          })();`;
-
-        }
-        bundleScript.innerHTML = contentScript;
+        bundleScript.src = url;
         this.shadowEl.appendChild(bundleScript);
-        logger.info('JS loaded successfully', url);
+        bundleScript.onload = e => {
+          logger.info('JS loaded successfully', url);
+          resolve();
+        };
+
+        // const res = await fetch(url, { method: 'GET', cache: 'default' });
+        // let contentScript = await res.text();
+        // const bundleScript = document.createElement('script');
+        // bundleScript.setAttribute('charset', 'utf-8');
+        // bundleScript.setAttribute('type', 'text/javascript');
+        //
+        // if (contentScript.indexOf('FRONTEGG_INJECTOR_CDN_HOST')) {
+        //   contentScript = contentScript.replace('/FRONTEGG_INJECTOR_CDN_HOST', this.cdn);
+        //
+        //   contentScript = `(()=> { const fronteggInjector = FronteggInjector.getInstance('${this.name}');
+        //   ${contentScript}
+        //   })();`;
+        //
+        // }
+        // bundleScript.innerHTML = contentScript;
+
+        // this.shadowEl.appendChild(bundleScript);
+        // logger.info('JS loaded successfully', url);
 
       } else {
         logger.info('Loading lazy JS file from ', url.src);
