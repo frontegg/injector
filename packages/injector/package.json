@@ -17,5 +17,5 @@
     "build:umd:min": "cd dist/umd && uglifyjs --compress --mangle --source-map --comments -o admin-box-injector.min.js -- admin-box-injector.js && gzip admin-box-injector.min.js -c > admin-box-injector.min.js.gz",
     "publish": "npm publish"
   },
-  "gitHead": "b1d8b2b4c24025577a08ce64ad3adb8ffc351586"
+  "gitHead": "ef8aaf9179ad25b2f6be19b1506c34e86f7d13f7"
 }
