@@ -21,7 +21,7 @@ class Injector {
   private js: string[] = [];
   private css: string[] = [];
   name: string = 'default';
-  cdn: string = 'https://fronteggdeveustorage.blob.core.windows.net/admin-box/';
+  cdn: string = 'https://fronteggdeveustorage.blob.core.windows.net/admin-box';
   version: string = 'latest';
   mount: (element: HTMLElement) => void = () => {this.logger.error('App not loaded yet');};
   unmount: (element: HTMLElement) => void = () => {this.logger.error('App not loaded yet');};
@@ -41,7 +41,8 @@ class Injector {
     const { logger } = instance;
 
     logger.info('Initializing Injector instance');
-    instance.cdn = instance.cdn ?? options.cdn;
+    instance.cdn = options.cdn ?? instance.cdn;
+    instance.cdn = instance.cdn.endsWith('/') ? instance.cdn.substring(0, instance.cdn.length - 1) : instance.cdn;
 
     logger.info('Retrieving version metadata');
     const metadata = await getVersionMetadata(logger, instance.cdn, options.version);
