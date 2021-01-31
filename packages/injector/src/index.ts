@@ -2,8 +2,8 @@ import Logger from './logger';
 import { InjectorOptions } from './types';
 import { getOrCreateHtmlElementInside, getVersionMetadata } from './helpers';
 
-const defaultContainerId = 'frontegg-host';
-const defaultContentId = 'frontegg-content';
+const CONTAINER_ID_PREFIX = 'frontegg-host';
+const CONTENT_ID_PREFIX = 'frontegg-content';
 
 declare global {
   interface Window {
@@ -29,9 +29,9 @@ class Injector {
   private constructor(name: string) {
     this.logger = new Logger();
     this.logger.info('Create shadow dom element');
-    this.hostEl = getOrCreateHtmlElementInside(`${defaultContainerId}-${name}`, document.body);
+    this.hostEl = getOrCreateHtmlElementInside(`${CONTAINER_ID_PREFIX}-${name}`, document.body);
     this.shadowEl = this.hostEl.attachShadow({ mode: 'open' });
-    this.rootEl = getOrCreateHtmlElementInside(defaultContentId, this.shadowEl);
+    this.rootEl = getOrCreateHtmlElementInside(CONTENT_ID_PREFIX, this.shadowEl);
     this.name = name;
   }
 
