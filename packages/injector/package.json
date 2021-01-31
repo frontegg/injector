@@ -14,7 +14,7 @@
     "build:esm": "tsc --module es2015 --target es5 --outDir dist/esm",
     "build:cjs": "tsc --module commonjs --target es5 --outDir dist/cjs",
     "build:umd": "rollup dist/esm/index.js --format umd --context window --sourcemap --name AdminBoxInjector -o dist/umd/admin-box-injector.js",
-    "build:umd:min": "cd dist/umd && uglifyjs --compress --mangle --source-map --comments -o admin-box-injector.min.js -- admin-box-injector.js && gzip admin-box-injector.min.js -c > admin-box-injector.min.js.gz",
+    "build:umd:min": "cd dist/umd && uglifyjs --compress --mangle --source-map --comments -o admin-box-injector.min.js -- admin-box-injector.js && gzip admin-box-injector.min.js -c > admin-box-injector.min.js.gz"
   },
   "gitHead": "ef8aaf9179ad25b2f6be19b1506c34e86f7d13f7"
 }
