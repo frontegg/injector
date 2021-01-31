@@ -26,7 +26,7 @@ class Injector {
   mount: (element: HTMLElement) => void = () => {this.logger.error('App not loaded yet');};
   unmount: (element: HTMLElement) => void = () => {this.logger.error('App not loaded yet');};
 
-  private constructor(name: string) {
+  protected constructor(name: string) {
     this.logger = new Logger();
     this.logger.info('Create shadow dom element');
     this.hostEl = getOrCreateHtmlElementInside(`${CONTAINER_ID_PREFIX}-${name}`, document.body);
@@ -80,7 +80,7 @@ class Injector {
     this.logger.info(`${this.name} destroyed`);
   }
 
-  private async loadEntrypoints() {
+  protected async loadEntrypoints() {
     return Promise.all([
       ...this.js.map((file: string) => this.injectJavascript(`${this.cdn}/${this.version}/js/${file}`, true)),
       ...this.css.map((file: string) => this.injectCss(`${this.cdn}/${this.version}/css/${file}`)),
