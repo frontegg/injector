@@ -122,6 +122,7 @@ class Injector {
         logger.info('Loading lazy JS file from ', url.src);
         this.shadowEl.appendChild(url);
       }
+      resolve()
     });
   }
 
@@ -142,6 +143,7 @@ class Injector {
       } else {
         logger.info('Loading lazy CSS file from ', url.href);
         this.shadowEl.insertBefore(url, this.rootEl);
+        resolve();
       }
     });
   }

@@ -11,8 +11,12 @@ export function getOrCreateHtmlElementInside(id: string, container: HTMLElement 
   return el;
 }
 
-export async function getVersionMetadata(logger: Logger, cdn: string, version: string): Promise<VersionMetadata> {
-  logger.info(`Retrieving version from cdn: ${version}`);
-  const res = await fetch(`${cdn}/${version}`, { cache: 'no-cache' });
+export async function getVersionMetadata(logger: Logger, cdn: string, _version: string): Promise<VersionMetadata> {
+  logger.info(`Retrieving version from cdn: ${_version}`);
+  let version = _version;
+  if (version !== 'latest' && version !== 'stable') {
+    version = `${_version}/config`;
+  }
+  const res = await fetch(`${cdn}/${version}.json`, { cache: 'no-cache' });
   return res.json();
 }
