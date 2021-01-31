@@ -33,6 +33,12 @@ class Injector {
     this.shadowEl = this.hostEl.attachShadow({ mode: 'open' });
     this.rootEl = getOrCreateHtmlElementInside(CONTENT_ID_PREFIX, this.shadowEl);
     this.name = name;
+
+    this.open = this.open.bind(this);
+    this.close = this.close.bind(this);
+    this.destroy = this.destroy.bind(this);
+    this.injectJavascript = this.injectJavascript.bind(this);
+    this.injectCss = this.injectCss.bind(this);
   }
 
   static async init(options: InjectorOptions, name: string = 'default') {
