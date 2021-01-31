@@ -16,5 +16,6 @@
     "build:umd": "rollup dist/esm/index.js --format umd --context window --sourcemap --name AdminBoxInjector -o dist/umd/admin-box-injector.js",
     "build:umd:min": "cd dist/umd && uglifyjs --compress --mangle --source-map --comments -o admin-box-injector.min.js -- admin-box-injector.js && gzip admin-box-injector.min.js -c > admin-box-injector.min.js.gz",
     "publish": "npm publish"
-  }
+  },
+  "gitHead": "df9e15c15774e40fe01f632046f92ca368870a9a"
 }

@@ -1,11 +1,10 @@
 {
   "name": "@frontegg/injector-cli",
   "version": "0.0.2",
+  "private": true,
   "author": "Frontegg LTD",
   "scripts": {
-    "build": "export NODE_ENV='production'; rm -rf ./dist && rollup -c ../../scripts/rollup-cli.config.js && echo DONE",
-    "build:watch": "rollup -w -c ../../scripts/rollup-cli.config.js",
-    "test": "jest --runInBand --passWithNoTests -c ../../scripts/jest.config.json --rootDir . && echo DONE"
+    "build": "export NODE_ENV='production'; rm -rf ./dist && rollup -c ./rollup-cli.config.js && echo DONE"
   },
   "bin": {
     "frontegg-builder": "dist/index.js"
@@ -23,5 +22,6 @@
     "@rollup/plugin-replace": "^2.3.3",
     "@types/node": "^13.9.1",
     "rollup-plugin-typescript2": "^0.27.2"
-  }
+  },
+  "gitHead": "df9e15c15774e40fe01f632046f92ca368870a9a"
 }
