@@ -98,33 +98,33 @@ class Injector {
       const logger = this.logger;
       if (typeof url === 'string') {
         logger.info('Loading JS file from ', url);
-        const bundleScript = document.createElement('script');
-        bundleScript.setAttribute('charset', 'utf-8');
-        bundleScript.src = url;
-        this.shadowEl.appendChild(bundleScript);
-        bundleScript.onload = e => {
-          logger.info('JS loaded successfully', url);
-          resolve();
-        };
-
-        // const res = await fetch(url, { method: 'GET', cache: 'default' });
-        // let contentScript = await res.text();
         // const bundleScript = document.createElement('script');
         // bundleScript.setAttribute('charset', 'utf-8');
-        // bundleScript.setAttribute('type', 'text/javascript');
-        //
-        // if (contentScript.indexOf('FRONTEGG_INJECTOR_CDN_HOST')) {
-        //   contentScript = contentScript.replace('/FRONTEGG_INJECTOR_CDN_HOST', this.cdn);
-        //
-        //   contentScript = `(()=> { const fronteggInjector = FronteggInjector.getInstance('${this.name}');
-        //   ${contentScript}
-        //   })();`;
-        //
-        // }
-        // bundleScript.innerHTML = contentScript;
-
+        // bundleScript.src = url;
         // this.shadowEl.appendChild(bundleScript);
-        // logger.info('JS loaded successfully', url);
+        // bundleScript.onload = e => {
+        //   logger.info('JS loaded successfully', url);
+        //   resolve();
+        // };
+
+        const res = await fetch(url, { method: 'GET', cache: 'default' });
+        let contentScript = await res.text();
+        const bundleScript = document.createElement('script');
+        bundleScript.setAttribute('charset', 'utf-8');
+        bundleScript.setAttribute('type', 'text/javascript');
+
+        if (contentScript.indexOf('FRONTEGG_INJECTOR_CDN_HOST')) {
+          contentScript = contentScript.replace('/FRONTEGG_INJECTOR_CDN_HOST', this.cdn);
+
+          contentScript = `(()=> { const fronteggInjector = FronteggInjector.getInstance('${this.name}');
+          ${contentScript}
+          })();`;
+
+        }
+        bundleScript.innerHTML = contentScript;
+
+        this.shadowEl.appendChild(bundleScript);
+        logger.info('JS loaded successfully', url);
 
       } else {
         logger.info('Loading lazy JS file from ', url.src);
