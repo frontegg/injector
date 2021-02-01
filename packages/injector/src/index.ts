@@ -20,6 +20,7 @@ class Injector {
   private readonly rootEl: HTMLElement;
   private js: string[] = [];
   private css: string[] = [];
+  loaded: boolean = false;
   name: string = 'default';
   cdn: string = 'https://fronteggdeveustorage.blob.core.windows.net/admin-box';
   version: string = 'latest';
@@ -45,6 +46,7 @@ class Injector {
     Object.assign(window, { FronteggInjector: Injector });
     const instance = new Injector(name);
     const { logger } = instance;
+    Injector._apps[name] = instance;
 
     logger.info('Initializing Injector instance');
     instance.cdn = options.cdn ?? instance.cdn;
@@ -57,7 +59,7 @@ class Injector {
     instance.css = metadata.css;
 
     logger.info(`Injector instance initialized successfully`, { name, cdn: instance.version, ...metadata });
-    Injector._apps[name] = instance;
+    instance.loaded = true;
 
     logger.info('Loading entrypoint files');
     await instance.loadEntrypoints();
@@ -73,6 +75,9 @@ class Injector {
   }
 
   open() {
+    if (!this.loaded) {
+      throw Error(`Injected app [${this.name}] not loaded yet!`);
+    }
     this.mount(this.rootEl);
   }
 
@@ -130,7 +135,7 @@ class Injector {
         logger.info('Loading lazy JS file from ', url.src);
         this.shadowEl.appendChild(url);
       }
-      resolve()
+      resolve();
     });
   }
 
