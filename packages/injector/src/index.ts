@@ -24,7 +24,7 @@ class Injector {
   name: string = 'default';
   cdn: string = 'https://fronteggdeveustorage.blob.core.windows.net/admin-box';
   version: string = 'latest';
-  mount: (element: HTMLElement) => void = () => {this.logger.error('App not loaded yet');};
+  mount: (element: HTMLElement, props: any) => void = () => {this.logger.error('App not loaded yet');};
   unmount: (element: HTMLElement) => void = () => {this.logger.error('App not loaded yet');};
 
   protected constructor(name: string) {
@@ -78,7 +78,7 @@ class Injector {
     if (!this.loaded) {
       throw Error(`Injected app [${this.name}] not loaded yet!`);
     }
-    this.mount(this.rootEl);
+    this.mount(this.rootEl, this);
   }
 
   close() {
