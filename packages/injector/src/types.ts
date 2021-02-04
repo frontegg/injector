@@ -1,9 +1,12 @@
 export interface InjectorOptions {
-  displayAs?: 'dialog' | 'fullscreen',
   version: string | 'latest' | 'stable' | 'next';
   cdn?: string;
 
-  [key: string]: any;
+  themeOptions: {
+    displayAs?: 'dialog' | 'fullscreen';
+    [key: string]: any;
+  };
+  contextOptions: any;
 }
 
 export interface VersionMetadata {
