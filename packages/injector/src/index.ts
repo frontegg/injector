@@ -14,12 +14,14 @@ declare global {
 class Injector {
   private static _apps: { [name in string]: Injector } = {};
 
+  private readonly options: InjectorOptions;
   private readonly logger: Logger;
   private readonly hostEl: HTMLElement;
   private readonly shadowEl: ShadowRoot;
   private readonly rootEl: HTMLElement;
   private js: string[] = [];
   private css: string[] = [];
+  isOpen: boolean = false;
   loaded: boolean = false;
   name: string = 'default';
   cdn: string = 'https://fronteggdeveustorage.blob.core.windows.net/admin-box';
@@ -27,13 +29,14 @@ class Injector {
   mount: (element: HTMLElement, props: any) => void = () => {this.logger.error('App not loaded yet');};
   unmount: (element: HTMLElement) => void = () => {this.logger.error('App not loaded yet');};
 
-  protected constructor(name: string) {
+  protected constructor(name: string, options: InjectorOptions) {
     this.logger = new Logger();
     this.logger.info('Create shadow dom element');
     this.hostEl = getOrCreateHtmlElementInside(`${CONTAINER_ID_PREFIX}-${name}`, document.body);
     this.shadowEl = this.hostEl.attachShadow({ mode: 'open' });
     this.rootEl = getOrCreateHtmlElementInside(CONTENT_ID_PREFIX, this.shadowEl);
     this.name = name;
+    this.options = options;
 
     this.open = this.open.bind(this);
     this.close = this.close.bind(this);
@@ -44,7 +47,7 @@ class Injector {
 
   static async init(options: InjectorOptions, name: string = 'default') {
     Object.assign(window, { FronteggInjector: Injector });
-    const instance = new Injector(name);
+    const instance = new Injector(name, options);
     const { logger } = instance;
     Injector._apps[name] = instance;
 
@@ -78,11 +81,16 @@ class Injector {
     if (!this.loaded) {
       throw Error(`Injected app [${this.name}] not loaded yet!`);
     }
-    this.mount(this.rootEl, this);
+    this.mount(this.rootEl, this.options);
+    this.isOpen = true;
   }
 
   close() {
+    if (!this.loaded) {
+      throw Error(`Injected app [${this.name}] not loaded yet!`);
+    }
     this.unmount(this.rootEl);
+    this.isOpen = false;
   }
 
   destroy() {
@@ -99,25 +107,12 @@ class Injector {
   }
 
   injectJavascript(url: string | HTMLScriptElement) {
-    // if (typeof url === 'string') {
-
-    // }else{
-    // return this.shadowEl.appendChild(url);
-    // }
     return (async () => {
       const logger = this.logger;
       if (typeof url !== 'string') {
         url = url.src;
       }
       logger.info('Loading JS file from ', url);
-      // const bundleScript = document.createElement('script');
-      // bundleScript.setAttribute('charset', 'utf-8');
-      // bundleScript.src = url;
-      // this.shadowEl.appendChild(bundleScript);
-      // bundleScript.onload = e => {
-      //   logger.info('JS loaded successfully', url);
-      //   resolve();
-      // };
 
       const res = await fetch(url, { method: 'GET', cache: 'default' });
       let contentScript = await res.text();
@@ -138,11 +133,6 @@ class Injector {
       this.shadowEl.appendChild(bundleScript);
       logger.info('JS loaded successfully', url);
 
-      // } else {
-      //   logger.info('Loading lazy JS file from ', url.src);
-      //   this.shadowEl.appendChild(url);
-      // }
-      // resolve();
     })();
   }
 
@@ -156,7 +146,7 @@ class Injector {
         bundleCss.rel = 'stylesheet';
         bundleCss.type = 'text/css';
         this.shadowEl.prepend(bundleCss);
-        bundleCss.onload = e => {
+        bundleCss.onload = () => {
           logger.info('CSS loaded successfully', url);
           resolve();
         };
