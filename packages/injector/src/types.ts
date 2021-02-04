@@ -2,7 +2,7 @@ export interface InjectorOptions {
   version: string | 'latest' | 'stable' | 'next';
   cdn?: string;
 
-  themeOptions: {
+  themeOptions?: {
     displayAs?: 'dialog' | 'fullscreen';
     [key: string]: any;
   };
